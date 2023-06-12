@@ -19,7 +19,7 @@ export const Cart = ({products, clearCart}) => {
             <Card.Body>
                 <Card.Title className={"text-center"}>Корзина</Card.Title>
 
-                {products === [] &&
+                {products.length === 0 &&
                     <Card.Text className={"text-center"}>
                         Пусто
                     </Card.Text>
