@@ -1,7 +1,5 @@
 package main;
 
-import config.ProjectConfig;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import proxies.SmsAutoPayNotificationProxy;
 import repositories.DBAutoPayRepository;
 import services.AutoPayService;
@@ -9,9 +7,11 @@ import services.AutoPayService;
 public class Main {
 
   public static void main(String[] args) {
-    var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
+    var autoPayRepository = new DBAutoPayRepository();
+    var autoPayNotificationProxy = new SmsAutoPayNotificationProxy();
 
-    var autoPayService = context.getBean(AutoPayService.class);
+    var autoPayService = new AutoPayService(autoPayRepository, autoPayNotificationProxy);
+
     autoPayService.sendReminder();
   }
 }

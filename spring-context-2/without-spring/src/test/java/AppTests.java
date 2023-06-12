@@ -1,30 +1,29 @@
-import config.ProjectConfig;
+import model.AutoPayment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import proxies.AutoPayNotificationProxy;
+import repositories.AutoPayRepository;
 import services.AutoPayService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { ProjectConfig.class })
 public class AppTests {
 
-    @Autowired
-    private ApplicationContext context;
-
     @Test
-    @DisplayName("Verify that CommentService every time you request an instance" +
-            " from the Spring context, you get the same instance")
-    public void testCommentServiceIsSingleton() {
-        var cs1 = context.getBean("commentService", AutoPayService.class);
-        var cs2 = context.getBean("commentService", AutoPayService.class);
+    @DisplayName("Verify that CommentService correctly delegates the " +
+            "responsibilities to the repository and proxy objects.")
+    public void testCommentService() {
+        var autoPayRepository = mock(AutoPayRepository.class);
+        var autoPayNotificationProxy = mock(AutoPayNotificationProxy.class);
 
-        assertEquals(cs1, cs2);
+        var commentService = new AutoPayService(autoPayRepository, autoPayNotificationProxy);
+
+        commentService.sendReminder();
+
+        verify(autoPayRepository).getAutoPayments();
+        verify(autoPayNotificationProxy).sendNotification(any(AutoPayment.class));
     }
 
 }

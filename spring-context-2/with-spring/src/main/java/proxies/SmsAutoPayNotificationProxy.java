@@ -1,7 +1,9 @@
 package proxies;
 
 import model.AutoPayment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SmsAutoPayNotificationProxy implements AutoPayNotificationProxy {
 
     @Override

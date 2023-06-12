@@ -1,8 +1,6 @@
 package services;
 
 import model.AutoPayment;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import proxies.AutoPayNotificationProxy;
 import repositories.AutoPayRepository;
 
@@ -10,7 +8,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@Service
 public class AutoPayService {
 
   private final AutoPayRepository autoPayRepository;

@@ -1,11 +1,14 @@
 package repositories;
 
 import model.AutoPayment;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Repository
 public class DBAutoPayRepository implements AutoPayRepository {
 
     @Override
