@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 @Aspect
 public class LoggingAspect {
 
-  private final Logger logger = Logger.getLogger(LoggingAspect.class.getName());
+  private Logger logger = Logger.getLogger(LoggingAspect.class.getName());
 
   @Around("execution(* services.*.*(..))")
   public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -26,5 +26,9 @@ public class LoggingAspect {
     logger.info("Method executed and returned " + returnedByMethod);
 
     return returnedByMethod;
+  }
+
+  public void setLogger(Logger logger) {
+    this.logger = logger;
   }
 }

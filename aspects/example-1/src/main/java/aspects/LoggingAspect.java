@@ -9,12 +9,16 @@ import java.util.logging.Logger;
 @Aspect
 public class LoggingAspect {
 
-  private Logger logger = Logger.getLogger(LoggingAspect.class.getName());
+    private Logger logger = Logger.getLogger(LoggingAspect.class.getName());
 
-  @Around("execution(* services.*.*(..))")
-  public void log(ProceedingJoinPoint joinPoint) throws Throwable {
-    logger.info("Method will execute");
-    joinPoint.proceed();
-    logger.info("Method executed");
-  }
+    @Around("execution(* services.*.*(..))")
+    public void log(ProceedingJoinPoint joinPoint) throws Throwable {
+        logger.info("Method will execute");
+        joinPoint.proceed();
+        logger.info("Method executed");
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
 }
