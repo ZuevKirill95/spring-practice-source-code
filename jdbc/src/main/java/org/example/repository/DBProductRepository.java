@@ -1,16 +1,19 @@
-package org.example.service;
+package org.example.repository;
 
 import org.example.entity.Product;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ProductRepository {
+@Repository
+public class DBProductRepository implements ProductRepository {
     public List<String> getProductNames() throws SQLException {
         ArrayList<String> names = new ArrayList<>();
-        var url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=root";
+        var url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
         try (var connection = DriverManager.getConnection(url);
              var prepareStatement = connection.prepareStatement("SELECT name FROM Product");
              var resultSet = prepareStatement.executeQuery()) {
@@ -86,13 +89,55 @@ public class ProductRepository {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 double price = resultSet.getDouble("price");
-                int count = resultSet.getInt("count");
-                Product product = new Product(id, name, BigDecimal.valueOf(price), count);
+                Product product = new Product(id, name, BigDecimal.valueOf(price));
 
                 products.add(product);
             }
 
             return products;
         }
+    }
+
+    @Override
+    public long save(Product product) {
+        var url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=root";
+        var insertSql = "INSERT INTO PRODUCT (name, price) VALUES (?,?);";
+
+        try (var connection = DriverManager.getConnection(url);
+             var prepareStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+            prepareStatement.setString(1, product.getName());
+            prepareStatement.setDouble(2, product.getPrice().doubleValue());
+
+            prepareStatement.executeUpdate();
+
+            ResultSet rs = prepareStatement.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else {
+                throw new RuntimeException("Ошибка при получении идентификатора");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<Product> findById(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Product> findAll(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteById(long id) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Product product) {
+        return false;
     }
 }

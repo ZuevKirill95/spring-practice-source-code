@@ -1,6 +1,14 @@
 package org.example.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.math.BigDecimal;
 
-public record Product(int id, String name, BigDecimal price, int count) {
+@Data
+@AllArgsConstructor
+public class Product {
+    private long id;
+    private String name;
+    private BigDecimal price;
 }
