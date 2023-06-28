@@ -9,7 +9,7 @@
 5. [Реализация Web-приложений](web-app)
 6. [Реализация REST-сервисов](rest-services)
 7. [Хранение данных. JDBC](jdbc)
-8. [Хранение данных. JdbcTemplate, Транзакции]()
+8. [Хранение данных. JdbcTemplate, Транзакции](jdbc-template)
 9. [Хранение данных. Hibernate, Spring Data]()
 10. [HTML,CSS,JS(TS)]()
 11. [React]()

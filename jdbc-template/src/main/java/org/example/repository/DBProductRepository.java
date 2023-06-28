@@ -1,0 +1,126 @@
+package org.example.repository;
+
+import org.example.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public class DBProductRepository implements ProductRepository {
+    public static final String JDBC = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=root";
+
+    private final JdbcTemplate jdbcTemplate;
+
+
+    @Autowired
+    public DBProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public long save(Product product) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        var insertSql = "INSERT INTO PRODUCT (name, price) VALUES (?,?);";
+        jdbcTemplate.update(insertSql, product.getName(), product.getPrice(), keyHolder);
+
+        return (long) keyHolder.getKey();
+    }
+
+    @Override
+    public Optional<Product> findById(long productId) {
+        var selectSql = "SELECT * FROM PRODUCT where id = ?";
+
+        try (var connection = DriverManager.getConnection(JDBC);
+             var prepareStatement = connection.prepareStatement(selectSql)) {
+            prepareStatement.setLong(1, productId);
+
+            var resultSet = prepareStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double price = resultSet.getDouble("price");
+                Product product = new Product(id, name, BigDecimal.valueOf(price));
+
+                return Optional.of(product);
+            }
+
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Product> findAll(String productName) {
+        var selectSql = "SELECT * FROM PRODUCT where name like ?";
+        List<Product> products = new ArrayList<>();
+
+        try (var connection = DriverManager.getConnection(JDBC);
+             var prepareStatement = connection.prepareStatement(selectSql)) {
+            prepareStatement.setString(1, "%" + (productName == null ? "" : productName) + "%");
+
+            var resultSet = prepareStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double price = resultSet.getDouble("price");
+                Product product = new Product(id, name, BigDecimal.valueOf(price));
+
+                products.add(product);
+            }
+
+            return products;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean deleteById(long id) {
+        var selectSql = "DELETE FROM PRODUCT where id = ?";
+
+        try (var connection = DriverManager.getConnection(JDBC);
+             var prepareStatement = connection.prepareStatement(selectSql)) {
+            prepareStatement.setLong(1, id);
+
+            var rows = prepareStatement.executeUpdate();
+
+            return rows > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean update(Product product) {
+        var selectSql = """
+                UPDATE PRODUCT
+                SET 
+                name = ?,
+                price = ?
+                where id = ?;
+                """;
+
+        try (var connection = DriverManager.getConnection(JDBC);
+             var prepareStatement = connection.prepareStatement(selectSql)) {
+            prepareStatement.setString(1, product.getName());
+            prepareStatement.setDouble(2, product.getPrice().doubleValue());
+            prepareStatement.setLong(3, product.getId());
+
+            var rows = prepareStatement.executeUpdate();
+
+            return rows > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
