@@ -1,7 +1,4 @@
 ###
-GET localhost:8081/hello
-
-###
 POST localhost:8081/products
 Content-Type: application/json
 
@@ -28,7 +25,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE localhost:8081/products/123
-
-###
-POST localhost:8081/payment
+DELETE localhost:8081/products/1
