@@ -12,11 +12,11 @@ import java.util.Optional;
 @Repository
 public class DBProductRepository implements ProductRepository {
 
-    public static final String JDBC = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=root";
+    public static final String JDBC = "jdbc:postgresql://localhost:5432/postgres?currentSchema=zuev_kd&user=postgres&password=root";
 
     @Override
     public long save(Product product) {
-        var insertSql = "INSERT INTO PRODUCT (name, price) VALUES (?,?);";
+        var insertSql = "INSERT INTO products (name, price) VALUES (?,?);";
 
         try (var connection = DriverManager.getConnection(JDBC);
              var prepareStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
@@ -38,7 +38,7 @@ public class DBProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(long productId) {
-        var selectSql = "SELECT * FROM PRODUCT where id = ?";
+        var selectSql = "SELECT * FROM products where id = ?";
 
         try (var connection = DriverManager.getConnection(JDBC);
              var prepareStatement = connection.prepareStatement(selectSql)) {
@@ -63,7 +63,7 @@ public class DBProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findAll(String productName) {
-        var selectSql = "SELECT * FROM PRODUCT where name like ?";
+        var selectSql = "SELECT * FROM products where name like ?";
         List<Product> products = new ArrayList<>();
 
         try (var connection = DriverManager.getConnection(JDBC);
@@ -88,7 +88,7 @@ public class DBProductRepository implements ProductRepository {
 
     @Override
     public boolean deleteById(long id) {
-        var selectSql = "DELETE FROM PRODUCT where id = ?";
+        var selectSql = "DELETE FROM products where id = ?";
 
         try (var connection = DriverManager.getConnection(JDBC);
              var prepareStatement = connection.prepareStatement(selectSql)) {
@@ -105,7 +105,7 @@ public class DBProductRepository implements ProductRepository {
     @Override
     public boolean update(Product product) {
         var selectSql = """
-                UPDATE PRODUCT
+                UPDATE products
                 SET 
                 name = ?,
                 price = ?
