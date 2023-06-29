@@ -1,4 +1,6 @@
-create table if not exists product
+create schema if not exists my_schema;
+
+create table if not exists my_schema.products
 (
     id    integer generated always as identity
         primary key,
