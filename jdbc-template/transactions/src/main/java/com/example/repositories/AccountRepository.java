@@ -18,17 +18,17 @@ public class AccountRepository {
   }
 
   public Account findAccountById(long id) {
-    String sql = "SELECT * FROM account WHERE id = ?";
+    String sql = "SELECT * FROM accounts WHERE id = ?";
     return jdbc.queryForObject(sql, new AccountRowMapper(), id);
   }
 
   public List<Account> findAllAccounts() {
-    String sql = "SELECT * FROM account";
+    String sql = "SELECT * FROM accounts";
     return jdbc.query(sql, new AccountRowMapper());
   }
 
   public void changeAmount(long id, BigDecimal amount) {
-    String sql = "UPDATE account SET amount = ? WHERE id = ?";
+    String sql = "UPDATE accounts SET amount = ? WHERE id = ?";
     jdbc.update(sql, amount, id);
   }
 }
