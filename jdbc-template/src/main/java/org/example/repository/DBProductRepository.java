@@ -27,11 +27,18 @@ public class DBProductRepository implements ProductRepository {
 
     @Override
     public long save(Product product) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         var insertSql = "INSERT INTO PRODUCT (name, price) VALUES (?,?);";
-        jdbcTemplate.update(insertSql, product.getName(), product.getPrice(), keyHolder);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return (long) keyHolder.getKey();
+        jdbcTemplate.update(connection -> {
+            var prepareStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
+            prepareStatement.setString(1, product.getName());
+            prepareStatement.setDouble(2, product.getPrice().doubleValue());
+
+            return prepareStatement;
+        }, keyHolder);
+
+        return (long) (int) keyHolder.getKeys().get("id");
     }
 
     @Override

@@ -8,14 +8,14 @@ Content-Type: application/json
 }
 
 ###
-GET localhost:8081/products
+GET localhost:8080/products
 Content-Type: application/json
 
 ###
-GET localhost:8081/products/1
+GET localhost:8080/products/1
 
 ###
-PUT localhost:8081/products
+PUT localhost:8080/products
 Content-Type: application/json
 
 {
@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE localhost:8081/products/1
+DELETE localhost:8080/products/1
