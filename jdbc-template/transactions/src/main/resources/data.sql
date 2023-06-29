@@ -1,0 +1,2 @@
+INSERT INTO account VALUES (DEFAULT, 'Anna', 1000);
+INSERT INTO account VALUES (DEFAULT, 'Denis', 1000);
