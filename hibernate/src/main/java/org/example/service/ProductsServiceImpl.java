@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class ProductsServiceImpl implements ProductsService {
-    private DBProductRepository productRepository;
+    private final DBProductRepository productRepository;
 
     @Autowired
     public ProductsServiceImpl(DBProductRepository productRepository) {
