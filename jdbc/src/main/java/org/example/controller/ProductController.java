@@ -3,6 +3,7 @@ package org.example.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Product;
 import org.example.repository.ProductRepository;
+import org.example.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,52 +15,54 @@ import java.util.Optional;
 @RequestMapping("products")
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
     public long addProduct(@RequestBody Product product) {
         log.info("Добавление продукта {}", product);
 
-        return productRepository.save(product);
+        return productService.save(product);
     }
 
     @GetMapping
     public List<Product> getProducts(@RequestParam(required = false) String name) {
         log.info("Поиск продуктов по имени {}", name);
 
-        return productRepository.findAll(name);
+        return productService.findAll(name);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProducts(@PathVariable long id) {
-        Optional<Product> product = productRepository.findById(id);
+        log.info("Поиск продукта по идентификатору {}", id);
 
-        if (product.isPresent()) {
-            return ResponseEntity.ok().body(product.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Product> product = productService.findById(id);
+
+        return product.isPresent()
+                ? ResponseEntity.ok().body(product.get())
+                : ResponseEntity.notFound().build();
     }
 
     @PutMapping
     public Product updateProduct(@RequestBody Product product) {
-        productRepository.update(product);
+        log.info("Обновление продукта {}", product);
+
+        productService.update(product);
 
         return product;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable long id) {
-        boolean isDeleted = productRepository.deleteById(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
+        log.info("Удаление продукта по идентификатору {}", id);
 
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        boolean isDeleted = productService.deleteById(id);
+
+        return isDeleted
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }
