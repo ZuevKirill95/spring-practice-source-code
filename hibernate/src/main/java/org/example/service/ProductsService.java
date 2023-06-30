@@ -1,12 +1,11 @@
-package org.example.repository;
-
+package org.example.service;
 
 import org.example.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository {
+public interface ProductsService {
     long save(Product product);
 
     Optional<Product> findById(long id);
