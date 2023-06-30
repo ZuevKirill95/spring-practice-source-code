@@ -1,6 +1,6 @@
-package com.example.webapplicationexample.repository;
+package com.example.repository;
 
-import com.example.webapplicationexample.model.Product;
+import com.example.model.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -64,8 +64,8 @@ public class LocalProductRepository implements ProductRepository {
 
     private long generateId() {
         Random random = new Random();
-        int low = 1;
-        int high = 1_000_000;
+        long low = 1;
+        long high = 1_000_000;
         return random.nextLong(high - low) + low;
     }
 }

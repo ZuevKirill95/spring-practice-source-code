@@ -1,11 +1,11 @@
-package com.example.webapplicationexample.repository;
+package com.example.service;
 
-import com.example.webapplicationexample.model.Product;
+import com.example.model.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository {
+public interface ProductService {
     long save(Product product);
 
     Optional<Product> findById(long id);
