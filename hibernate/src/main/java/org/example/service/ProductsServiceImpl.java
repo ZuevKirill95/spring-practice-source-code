@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.entity.Product;
-import org.example.repository.DBProductRepository;
+import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @Service
 public class ProductsServiceImpl implements ProductsService {
-    private final DBProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductsServiceImpl(DBProductRepository productRepository) {
+    public ProductsServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
