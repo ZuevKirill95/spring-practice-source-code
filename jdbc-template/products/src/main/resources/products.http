@@ -1,6 +1,6 @@
 ###
 # Добавление продукта
-POST localhost:8081/products
+POST localhost:8080/products
 Content-Type: application/json
 
 {
@@ -10,16 +10,16 @@ Content-Type: application/json
 
 ###
 # Получение списка продуктов
-GET localhost:8081/products
+GET localhost:8080/products
 Content-Type: application/json
 
 ###
 # Получение продукта по идентификатору
-GET localhost:8081/products/1
+GET localhost:8080/products/1
 
 ###
 # Обновление продукта
-PUT localhost:8081/products
+PUT localhost:8080/products
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 
 ###
 # Удаление продукта по идентификатору
-DELETE localhost:8081/products/1
+DELETE localhost:8080/products/1
