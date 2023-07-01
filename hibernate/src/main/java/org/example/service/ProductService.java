@@ -5,7 +5,7 @@ import org.example.entity.Product;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductsService {
+public interface ProductService {
     long save(Product product);
 
     Optional<Product> findById(long id);

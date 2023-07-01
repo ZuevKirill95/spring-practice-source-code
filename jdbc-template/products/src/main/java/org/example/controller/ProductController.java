@@ -7,6 +7,8 @@ import org.example.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +24,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public long addProduct(@RequestBody Product product) {
+    public ResponseEntity<Void> addProduct(@RequestBody Product product) throws URISyntaxException {
         log.info("Добавление продукта {}", product);
 
-        return productService.save(product);
+        long id = productService.save(product);
+
+        return ResponseEntity
+                .created(new URI("http://localhost:8080/products/" + id))
+                .build();
     }
 
     @GetMapping
