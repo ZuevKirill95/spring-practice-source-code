@@ -1,0 +1,33 @@
+###
+# Добавление продукта
+POST localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Морковь",
+  "price": 70
+}
+
+###
+# Получение списка продуктов
+GET localhost:8080/products
+Content-Type: application/json
+
+###
+# Получение продукта по идентификатору
+GET localhost:8080/products/1
+
+###
+# Обновление продукта
+PUT localhost:8080/products
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Банан",
+  "price": 80
+}
+
+###
+# Удаление продукта по идентификатору
+DELETE localhost:8080/products/1
