@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
 @Slf4j
 @RestController
 @RequestMapping("products")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ProductController {
 
     private final ProductsService productsService;
