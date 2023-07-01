@@ -1,112 +1,92 @@
-import './App.css';
-import {TopPanel} from "./components/TopPanel";
-import {ProductCard} from "./components/ProductCard";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Col, Container, Row} from "react-bootstrap";
-import React, {useState} from "react";
-import {Cart} from "./components/Cart";
+import React, {useCallback, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {BrowserRouter as Router, Link, Route, Routes} from "react-router-dom";
 
-function App() {
-    const [products, setProducts] = useState([])
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
-    const putInCart = (name, price) => {
-        const foundProduct = products.find(p => p.name === name);
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
+import Profile from "./components/Profile";
 
-        let newProducts;
+import {logout} from "./slices/auth";
 
-        if (foundProduct) {
-            newProducts = products.map(p => {
-                if (p.name === name) {
-                    p.count++;
-                    return p;
-                } else {
-                    return p;
-                }
-            })
-        } else {
-            const product = {
-                name,
-                price,
-                count: 1
-            }
+import EventBus from "./common/EventBus";
+import {Container, Nav, Navbar} from "react-bootstrap";
 
-            newProducts = products.concat(product);
-        }
+const App = () => {
+    const {user: currentUser} = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
-        setProducts(newProducts)
-    }
+    const logOut = useCallback(() => {
+        dispatch(logout());
+    }, [dispatch]);
 
-    const clearCart = () => {
-        setProducts([])
-    }
+    useEffect(() => {
+        EventBus.on("logout", () => {
+            logOut();
+        });
+
+        return () => {
+            EventBus.remove("logout");
+        };
+    }, [currentUser, logOut]);
 
     return (
-        <>
-            <TopPanel/>
+        <Router>
+            <div>
+                <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+                    <Container>
+                        <Navbar.Brand href="#home">
+                            <Link to={"/"} className="navbar-brand">
+                                Хрум-хрум
+                            </Link>
+                        </Navbar.Brand>
+                        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+                            {currentUser ? (
+                                <Nav>
+                                    <Nav.Link href="#profile">
+                                        <Link to={"/profile"} className="nav-link">
+                                            {currentUser.username}
+                                        </Link>
+                                    </Nav.Link>
+                                    <Nav.Link eventKey={2} href="#memes">
+                                        <a href="/login" className="nav-link" onClick={logOut}>
+                                            Выход
+                                        </a>
+                                    </Nav.Link>
+                                </Nav>
+                            ) : (
+                                <Nav>
+                                    <Nav.Link href="#profile">
+                                        <Link to={"/login"} className="nav-link">
+                                            Вход
+                                        </Link>
+                                    </Nav.Link>
+                                    <Nav.Link eventKey={2} href="#memes">
+                                        <Link to={"/register"} className="nav-link">
+                                            Регистрация
+                                        </Link>
+                                    </Nav.Link>
+                                </Nav>
+                            )}
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
 
-            <Container style={{padding: 20}}>
-                <h2>Продукты</h2>
-                <Row>
-                    <Col>
-                        <Row xs={1} md={2} lg={4} className="g-4">
-                            <Col>
-                                <ProductCard
-                                    name={'Яблоко'}
-                                    price={80}
-                                    imageSrc={'/img/apple.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                            <Col>
-                                <ProductCard
-                                    name={'Банан'}
-                                    price={30}
-                                    imageSrc={'/img/banana.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                            <Col>
-                                <ProductCard
-                                    name={'Апельсин'}
-                                    price={70}
-                                    imageSrc={'/img/orange.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                            <Col>
-                                <ProductCard
-                                    name={'Персик'}
-                                    price={30}
-                                    imageSrc={'/img/peach.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                            <Col>
-                                <ProductCard
-                                    name={'Груша'}
-                                    price={20}
-                                    imageSrc={'/img/pear.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                            <Col>
-                                <ProductCard
-                                    name={'Арбуз'}
-                                    price={100}
-                                    imageSrc={'/img/watermelon.png'}
-                                    putInCart={putInCart}
-                                />
-                            </Col>
-                        </Row>
-                    </Col>
-
-                    <Col xs lg="2">
-                        <Cart products={products} clearCart={clearCart}/>
-                    </Col>
-                </Row>
-            </Container>
-        </>
+                <div className="container mt-3">
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/home" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/profile" element={<Profile/>}/>
+                    </Routes>
+                </div>
+            </div>
+        </Router>
     );
-}
+};
 
 export default App;
