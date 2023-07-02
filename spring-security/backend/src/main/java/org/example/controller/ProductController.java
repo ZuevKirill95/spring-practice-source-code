@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> addProduct(@RequestBody Product product) throws URISyntaxException {
         log.info("Добавление продукта {}", product);
 
@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Product updateProduct(@RequestBody Product product) {
         productService.update(product);
 
@@ -69,7 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable long id) {
         boolean isDeleted = productService.deleteById(id);
 

@@ -6,8 +6,22 @@ import UserService from "../services/user.service";
 
 const Home = () => {
     const [products, setProducts] = useState([])
+    const [name, setName] = useState([])
+    const [price, setPrice] = useState([])
 
     useEffect(() => {
+        getProducts();
+    }, []);
+
+    const clearCart = () => {
+        setProducts([])
+    }
+
+    const createProduct = () => {
+        UserService.createProduct({name, price}).then(() => getProducts())
+    }
+
+    const getProducts = () => {
         UserService.getProducts().then(
             (response) => {
                 setProducts(response.data);
@@ -21,10 +35,6 @@ const Home = () => {
                 setProducts([]);
             }
         );
-    }, []);
-
-    const clearCart = () => {
-        setProducts([])
     }
 
     return (
@@ -34,17 +44,17 @@ const Home = () => {
                 <Form>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                         <Form.Label>Наименование</Form.Label>
-                        <Form.Control size="sm" type="text"/>
+                        <Form.Control size="sm" type="text" onChange={e => setName(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                         <Form.Label>Цена</Form.Label>
-                        <Form.Control size="sm" type="text"/>
+                        <Form.Control size="sm" type="text" onChange={e => setPrice(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Изображение</Form.Label>
-                        <Form.Control type="file"/>
-                    </Form.Group>
-                    <Button variant="primary">
+                    {/*<Form.Group controlId="formFile" className="mb-3">*/}
+                    {/*    <Form.Label>Изображение</Form.Label>*/}
+                    {/*    <Form.Control type="file"/>*/}
+                    {/*</Form.Group>*/}
+                    <Button variant="primary" onClick={() => createProduct()}>
                         Добавить
                     </Button>
                 </Form>
@@ -56,18 +66,19 @@ const Home = () => {
                         {products.map(product => {
                             return <Col key={product.id}>
                                 <ProductCard
+                                    id={product.id}
                                     name={product.name}
                                     price={product.price}
                                     imageSrc={product.image}
+                                    getProducts={getProducts}
                                 />
                             </Col>
                         })}
                     </Row>
-
                 </Col>
 
                 <Col xs lg="2">
-                    <Cart products={products} clearCart={clearCart}/>
+                    <Cart/>
                 </Col>
             </Row>
         </Container>

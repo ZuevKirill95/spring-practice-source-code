@@ -11,8 +11,8 @@ const createProduct = (product) => {
     return axios.post(API_URL, product, {headers: authHeader()});
 };
 
-const getModeratorBoard = () => {
-    return axios.get(API_URL + "mod", {headers: authHeader()});
+const deleteProduct = (id) => {
+    return axios.delete(API_URL + `/${id}`, {headers: authHeader()});
 };
 
 const getAdminBoard = () => {
@@ -22,7 +22,7 @@ const getAdminBoard = () => {
 const userService = {
     getProducts,
     createProduct,
-    getModeratorBoard,
+    deleteProduct,
     getAdminBoard,
 };
 
