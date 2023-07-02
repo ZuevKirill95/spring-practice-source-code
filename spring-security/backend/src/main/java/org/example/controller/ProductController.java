@@ -1,11 +1,17 @@
 package org.example.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.example.entity.Product;
 import org.example.service.ProductService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -25,6 +31,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<Void> addProduct(@RequestBody Product product) throws URISyntaxException {
         log.info("Добавление продукта {}", product);
 
@@ -54,6 +61,7 @@ public class ProductController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('MODERATOR')")
     public Product updateProduct(@RequestBody Product product) {
         productService.update(product);
 
@@ -61,6 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<?> deleteProduct(@PathVariable long id) {
         boolean isDeleted = productService.deleteById(id);
 
@@ -69,5 +78,15 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(
+            value = "/images/{imageName}",
+            produces = MediaType.IMAGE_PNG_VALUE
+    )
+    public @ResponseBody byte[] getImageWithMediaType(@PathVariable String imageName) throws IOException {
+        InputStream in = getClass()
+                .getResourceAsStream("/images/" + imageName);
+        return IOUtils.toByteArray(in);
     }
 }

@@ -1,37 +1,27 @@
-import React, {useState} from "react";
-import {Col, Container, Row} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
+import {Button, Col, Container, Row, Form} from "react-bootstrap";
 import {ProductCard} from "./ProductCard";
 import {Cart} from "./Cart";
+import UserService from "../services/user.service";
 
 const Home = () => {
     const [products, setProducts] = useState([])
 
-    const putInCart = (name, price) => {
-        const foundProduct = products.find(p => p.name === name);
+    useEffect(() => {
+        UserService.getProducts().then(
+            (response) => {
+                setProducts(response.data);
+            },
+            (error) => {
+                const _content =
+                    (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString();
 
-        let newProducts;
-
-        if (foundProduct) {
-            newProducts = products.map(p => {
-                if (p.name === name) {
-                    p.count++;
-                    return p;
-                } else {
-                    return p;
-                }
-            })
-        } else {
-            const product = {
-                name,
-                price,
-                count: 1
+                setProducts([]);
             }
-
-            newProducts = products.concat(product);
-        }
-
-        setProducts(newProducts)
-    }
+        );
+    }, []);
 
     const clearCart = () => {
         setProducts([])
@@ -40,58 +30,40 @@ const Home = () => {
     return (
         <Container style={{padding: 20}}>
             <h2>Продукты</h2>
+            <Row md={3} style={{padding: 20}}>
+                <Form>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        <Form.Label>Наименование</Form.Label>
+                        <Form.Control size="sm" type="text"/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        <Form.Label>Цена</Form.Label>
+                        <Form.Control size="sm" type="text"/>
+                    </Form.Group>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>Изображение</Form.Label>
+                        <Form.Control type="file"/>
+                    </Form.Group>
+                    <Button variant="primary">
+                        Добавить
+                    </Button>
+                </Form>
+            </Row>
+
             <Row>
                 <Col>
                     <Row xs={1} md={2} lg={4} className="g-4">
-                        <Col>
-                            <ProductCard
-                                name={'Яблоко'}
-                                price={80}
-                                imageSrc={'/img/apple.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
-                        <Col>
-                            <ProductCard
-                                name={'Банан'}
-                                price={30}
-                                imageSrc={'/img/banana.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
-                        <Col>
-                            <ProductCard
-                                name={'Апельсин'}
-                                price={70}
-                                imageSrc={'/img/orange.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
-                        <Col>
-                            <ProductCard
-                                name={'Персик'}
-                                price={30}
-                                imageSrc={'/img/peach.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
-                        <Col>
-                            <ProductCard
-                                name={'Груша'}
-                                price={20}
-                                imageSrc={'/img/pear.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
-                        <Col>
-                            <ProductCard
-                                name={'Арбуз'}
-                                price={100}
-                                imageSrc={'/img/watermelon.png'}
-                                putInCart={putInCart}
-                            />
-                        </Col>
+                        {products.map(product => {
+                            return <Col key={product.id}>
+                                <ProductCard
+                                    name={product.name}
+                                    price={product.price}
+                                    imageSrc={product.image}
+                                />
+                            </Col>
+                        })}
                     </Row>
+
                 </Col>
 
                 <Col xs lg="2">

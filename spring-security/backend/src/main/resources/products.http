@@ -5,7 +5,8 @@ Content-Type: application/json
 
 {
   "name": "Морковь",
-  "price": 70
+  "price": 70,
+  "image": 12312323
 }
 
 ###
@@ -31,3 +32,6 @@ Content-Type: application/json
 ###
 # Удаление продукта по идентификатору
 DELETE localhost:8080/products/1
+
+###
+GET localhost:8080/products/images/apple.png
