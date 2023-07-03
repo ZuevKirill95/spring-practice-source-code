@@ -1,16 +1,16 @@
-const isEdit = false;
+const isEdit = true;
 
 export const Edit = () => {
     return (
-        isEdit ? (
-            <>
-                <h2>Сменить имя</h2>
-                <input type="text" defaultValue={"Кирилл"}/>
-            </>
-        ) : (
-            <>
-                <h2>Имя</h2>
-                <text>Кирилл</text>
-            </>
-        ));
+        <>
+            <h4>isEdit = {isEdit.toString()}</h4>
+            {isEdit && <div>Редактирование</div>}
+            {isEdit ? (
+                <input type="text" defaultValue={"Иван"}/>
+            ) : (
+                <div>Иван</div>
+            )
+            }
+        </>
+    )
 }

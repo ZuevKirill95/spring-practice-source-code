@@ -6,7 +6,7 @@ const user = {
 export const Profile = () => {
     return (
         <>
-            <h1>{user.name}</h1>
+            <h3>{user.name}</h3>
             <img
                 className="avatar"
                 src={user.imageUrl}
