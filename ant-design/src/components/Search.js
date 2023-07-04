@@ -1,6 +1,5 @@
 import {AutoComplete, Input} from 'antd';
 import {useState} from 'react';
-import booksTable from "./BooksTable";
 
 const data = [
     {

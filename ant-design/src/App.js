@@ -3,6 +3,7 @@ import {Layout} from "antd";
 import {Content, Header} from "antd/es/layout/layout";
 import BooksTable from "./components/BooksTable";
 import Search from "./components/Search";
+import CreateBookForm from "./components/CreateBookForm";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Search style={{marginLeft: 'auto'}} />
             </Header>
             <Content style={{padding: '0 50px'}}>
+                <CreateBookForm/>
                 <div className="site-layout-content">
                     <BooksTable/>
                 </div>

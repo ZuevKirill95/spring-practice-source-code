@@ -1,4 +1,5 @@
-import { Space, Table, Tag } from 'antd';
+import {Space, Table} from 'antd';
+
 const columns = [
     {
         title: 'Название',
