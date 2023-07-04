@@ -1,6 +1,6 @@
 import {Button, Form, Input, InputNumber, Select} from 'antd';
 
-const { Option } = Select;
+const {Option} = Select;
 const layout = {
     labelCol: {
         span: 8,
@@ -15,12 +15,13 @@ const tailLayout = {
         span: 16,
     },
 };
-const CreateBookForm = () => {
+const CreateBookForm = ({books, handleCreateBooks}) => {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log(values);
+        handleCreateBooks(values)
     };
+
     const onReset = () => {
         form.resetFields();
     };
@@ -45,7 +46,7 @@ const CreateBookForm = () => {
                     },
                 ]}
             >
-                <Input />
+                <Input/>
             </Form.Item>
 
             <Form.Item
@@ -57,7 +58,7 @@ const CreateBookForm = () => {
                     },
                 ]}
             >
-                <Input />
+                <Input/>
             </Form.Item>
 
             <Form.Item
@@ -69,7 +70,7 @@ const CreateBookForm = () => {
                     },
                 ]}
             >
-                <InputNumber />
+                <InputNumber/>
             </Form.Item>
 
             <Form.Item {...tailLayout}>
