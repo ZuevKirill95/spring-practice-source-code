@@ -1,4 +1,6 @@
 import {Button, Form, Input, InputNumber, Select} from 'antd';
+import {useDispatch, useSelector} from "react-redux";
+import {push} from "../slices/booksSlice";
 
 const {Option} = Select;
 const layout = {
@@ -15,11 +17,12 @@ const tailLayout = {
         span: 16,
     },
 };
-const CreateBookForm = ({books, handleCreateBooks}) => {
+const CreateBookForm = () => {
+    const dispatch = useDispatch()
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        handleCreateBooks(values)
+        dispatch(push(values));
     };
 
     const onReset = () => {

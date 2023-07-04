@@ -1,8 +1,10 @@
 import {AutoComplete, Input} from 'antd';
 import {useState} from 'react';
+import {useSelector} from "react-redux";
 
 
-const Search = ({books}) => {
+const Search = () => {
+    const books = useSelector((state) => state.books.books)
     const [options, setOptions] = useState([]);
     const handleSearch = (value) => {
         setOptions(value ? searchResult(value) : []);
@@ -15,9 +17,9 @@ const Search = ({books}) => {
         return books
             .filter(book => book.name.toLowerCase().includes(query.toLowerCase()))
             .map(book => {
-                console.log(book.name)
                 return {
-                    value: <div>{book.name}</div>
+                    value: book.id,
+                    label: <div key={book.id}>{book.name}</div>
                 }
             })
     }

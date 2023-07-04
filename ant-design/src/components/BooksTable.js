@@ -1,7 +1,12 @@
 import {Space, Table} from 'antd';
+import {useDispatch, useSelector} from "react-redux";
+import {remove} from "../slices/booksSlice";
 
 
-const BooksTable = ({books, handleDeleteBooks}) => {
+const BooksTable = () => {
+    const books = useSelector((state) => state.books.books)
+    const dispatch = useDispatch()
+
     const columns = [
         {
             title: 'Название',
@@ -22,8 +27,8 @@ const BooksTable = ({books, handleDeleteBooks}) => {
         {
             title: 'Action',
             key: 'action',
-            render: (_, record) => (
-                <Space size="middle" onClick={handleDeleteBooks}>
+            render: (_, book) => (
+                <Space size="middle" onClick={() => dispatch(remove(book))}>
                     <a>Удалить</a>
                 </Space>
             ),
@@ -31,7 +36,7 @@ const BooksTable = ({books, handleDeleteBooks}) => {
     ];
 
     return (
-        <Table columns={columns} dataSource={books} />
+        <Table rowKey="id"  columns={columns} dataSource={books} />
     );
 }
 export default BooksTable;
