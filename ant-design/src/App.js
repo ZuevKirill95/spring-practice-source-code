@@ -2,12 +2,14 @@ import './App.css';
 import {Layout} from "antd";
 import {Content, Header} from "antd/es/layout/layout";
 import BooksTable from "./components/BooksTable";
+import Search from "./components/Search";
 
 function App() {
     return (
         <Layout className="layout">
-            <Header style={{display: 'flex', alignItems: 'center'}}>
-                <div style={{color: "white"}}>Библиотека</div>
+            <Header style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <h1 style={{color: "white"}}>Библиотека</h1>
+                <Search style={{marginLeft: 'auto'}} />
             </Header>
             <Content style={{padding: '0 50px'}}>
                 <div className="site-layout-content">
