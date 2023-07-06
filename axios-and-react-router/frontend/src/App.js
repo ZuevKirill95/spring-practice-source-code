@@ -1,10 +1,8 @@
 import './App.css';
 import {Layout} from "antd";
 import {Content, Header} from "antd/es/layout/layout";
-import BooksTable from "./components/BooksTable";
 import Search from "./components/Search";
-import CreateBookForm from "./components/CreateBookForm";
-import React, {useState} from "react";
+import React from "react";
 import {Link, Route, Routes} from "react-router-dom";
 import {MainPage} from "./pages/MainPage";
 import {AboutPage} from "./pages/AboutPage";

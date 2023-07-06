@@ -1,6 +1,5 @@
 import {Space, Table} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
-import {remove, set} from "../slices/booksSlice";
 import BookService from "../services/bookService";
 import {useEffect} from "react";
 

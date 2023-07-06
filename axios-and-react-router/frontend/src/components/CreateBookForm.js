@@ -1,6 +1,5 @@
 import {Button, Form, Input, InputNumber, Select} from 'antd';
-import {useDispatch, useSelector} from "react-redux";
-import {push, set} from "../slices/booksSlice";
+import {useDispatch} from "react-redux";
 import BookService from "../services/bookService";
 
 const {Option} = Select;
