@@ -1,37 +1,15 @@
-###
-# Добавление продукта
-POST localhost:8080/products
+### Добавление книги
+POST localhost:8081/books
 Content-Type: application/json
 
 {
-  "name": "Морковь",
-  "price": 70,
-  "image": 12312323
+  "name": "Анна Каренина",
+  "author": "Лев Толстой",
+  "year": 1877
 }
 
-###
-# Получение списка продуктов
-GET localhost:8080/products
-Content-Type: application/json
+### Получение списка книг
+GET localhost:8080/books
 
-###
-# Получение продукта по идентификатору
-GET localhost:8080/products/1
-
-###
-# Обновление продукта
-PUT localhost:8080/products
-Content-Type: application/json
-
-{
-  "id": 1,
-  "name": "Банан",
-  "price": 80
-}
-
-###
-# Удаление продукта по идентификатору
-DELETE localhost:8080/products/1
-
-###
-GET localhost:8080/products/images/apple.png
+### Удаление продукта по идентификатору
+DELETE localhost:8080/books/1

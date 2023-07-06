@@ -48,9 +48,8 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/**").permitAll()
-                                .requestMatchers("/products/**").permitAll()
-//                                .requestMatchers("/images/**").permitAll()
+                        auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/books/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
