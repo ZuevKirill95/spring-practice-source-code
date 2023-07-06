@@ -32,7 +32,7 @@ public class BookController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> addBook(@RequestBody Book book) throws URISyntaxException {
         log.info("Добавление книги {}", book);
 
