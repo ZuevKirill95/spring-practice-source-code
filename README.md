@@ -11,7 +11,7 @@
 7. [Хранение данных. JDBC](jdbc)
 8. [Хранение данных. JdbcTemplate, Транзакции](jdbc-template)
 9. [Хранение данных. Hibernate, Spring Data](hibernate)
-10. [React](react-begin)
+10. [React](react)
 11. [Ant Design и Redux](ant-design)
 12. [Axios и React-Router](axios-and-react-router)
 13. [Введение в Spring Security](spring-security)
