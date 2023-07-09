@@ -1,52 +1,42 @@
-import { Space, Table, Tag } from 'antd';
-const columns = [
-    {
-        title: 'Название',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Автор',
-        dataIndex: 'author',
-        key: 'author',
-    },
-    {
-        title: 'Год',
-        dataIndex: 'year',
-        key: 'year',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
+import {Space, Table} from 'antd';
+import {useDispatch, useSelector} from "react-redux";
+import {remove} from "../slices/booksSlice";
 
 
-const data = [
-    {
-        id: '1',
-        name: 'Метро 2033',
-        author: 'Дмитрий Глуховский',
-        year: 2002,
-    },
-    {
-        id: '2',
-        name: 'Преступление и наказание',
-        author: 'Федор Достоевский',
-        year: 1866,
-    },
-    {
-        id: '3',
-        name: 'Сумерки',
-        author: 'Стефани Майер',
-        year: 2005,
-    },
-];
-const BooksTable = () => <Table columns={columns} dataSource={data} />;
+const BooksTable = () => {
+    const books = useSelector((state) => state.books.books)
+    const dispatch = useDispatch()
+
+    const columns = [
+        {
+            title: 'Название',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Автор',
+            dataIndex: 'author',
+            key: 'author',
+        },
+        {
+            title: 'Год',
+            dataIndex: 'year',
+            key: 'year',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, book) => (
+                <Space size="middle" onClick={() => dispatch(remove(book))}>
+                    <a>Удалить</a>
+                </Space>
+            ),
+        },
+    ];
+
+    return (
+        <Table rowKey="id"  columns={columns} dataSource={books} />
+    );
+}
 export default BooksTable;

@@ -1,39 +1,10 @@
 import {AutoComplete, Input} from 'antd';
 import {useState} from 'react';
-import booksTable from "./BooksTable";
+import {useSelector} from "react-redux";
 
-const data = [
-    {
-        id: '1',
-        name: 'Метро 2033',
-        author: 'Дмитрий Глуховский',
-        year: 2002,
-    },
-    {
-        id: '2',
-        name: 'Преступление и наказание',
-        author: 'Федор Достоевский',
-        year: 1866,
-    },
-    {
-        id: '3',
-        name: 'Сумерки',
-        author: 'Стефани Майер',
-        year: 2005,
-    },
-];
 
-const searchResult = (query) => {
-    return data
-        .filter(book => book.name.toLowerCase().includes(query.toLowerCase()))
-        .map(book => {
-            console.log(book.name)
-            return {
-                value: <div>{book.name}</div>
-            }
-        })
-}
 const Search = () => {
+    const books = useSelector((state) => state.books.books)
     const [options, setOptions] = useState([]);
     const handleSearch = (value) => {
         setOptions(value ? searchResult(value) : []);
@@ -41,6 +12,18 @@ const Search = () => {
     const onSelect = (value) => {
         console.log('onSelect', value);
     };
+
+    const searchResult = (query) => {
+        return books
+            .filter(book => book.name.toLowerCase().includes(query.toLowerCase()))
+            .map(book => {
+                return {
+                    value: book.id,
+                    label: <div key={book.id}>{book.name}</div>
+                }
+            })
+    }
+
     return (
         <AutoComplete
             popupMatchSelectWidth={252}
