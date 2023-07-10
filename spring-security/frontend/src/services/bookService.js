@@ -2,7 +2,7 @@ import axios from "axios";
 import {set} from "../slices/booksSlice";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:8081/books";
+const API_URL = "/books";
 
 const getBooks = (dispatch) => {
     return axios.get(API_URL).then(
